@@ -1,0 +1,5 @@
+- 👋 Hi, I’m @Armonik4
+- 👀 I’m interested in backend development and hardware architect
+- 🌱 I’m currently learning Java and C++ (arduino)
+- 💞️ I’m looking to collaborate on Arduino programs and learn differents programming lenguages
+- 📫 How to reach me: Send email to alejoleon2004@gmail.com
