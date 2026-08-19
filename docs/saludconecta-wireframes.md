@@ -67,13 +67,31 @@ Las pantallas usan el marco estándar de 390 × 844 px (iPhone 14).
 | **Consistencia** — ¿los elementos se ven iguales en todas las pantallas? | Todo se construye con un mismo kit de componentes: `SCREEN`, `STATUS`, `APPBAR`, `CONTENT`, `NAV`, `BTN`, `CHIP`, `CIRC`. Mismo radio (10 px), mismo grosor de borde (1 px), misma escala tipográfica y el mismo padding de 20 px. |
 | **Adaptabilidad** — ¿se diferencia la interfaz del médico de la del paciente? | El paciente navega en fondo claro con `Inicio / Buscar / Mis Citas / Perfil`. El médico entra a un dashboard con **header oscuro**, tarjetas de métricas invertidas y nav `Agenda / Pacientes / Historial / Perfil`. El rol se elige desde el login. |
 
-## 5. Reconstruir o extender el diseño
+## 5. Pendiente y cómo completarlo
+
+Faltan por incorporar al archivo de Figma la **pantalla 10 (Mis Citas)** y la **página de
+User Flow**. El plan **Starter de Figma permite 20 llamadas MCP al mes** (no por hora ni por
+día), y esa cuota se agotó construyendo las nueve primeras pantallas.
+
+Hay dos caminos:
+
+**A · Importar los SVG (no consume cuota).**
+`docs/svg/10-mis-citas.svg` y `docs/svg/02-user-flow.svg` se arrastran directamente al
+lienzo de Figma y quedan como capas editables. Después conviene seleccionar el contenido
+de la pantalla y pulsar `Ctrl/Cmd + Alt + G` para envolverlo en un frame de 390 × 844.
+Se regeneran con `python3 figma-scripts/build-svg.py`.
+
+**B · Ejecutar los scripts cuando se renueve la cuota** (o al pasar a plan Professional,
+que da 200 llamadas al día con asiento Full o Dev).
+
+## 6. Reconstruir o extender el diseño
 
 La carpeta `figma-scripts/` contiene el código de la Figma Plugin API que genera el diseño.
 
 - `00-helpers.js` — kit de componentes compartido (pegar siempre primero).
 - `10-mis-citas.js` — pantalla 10, pendiente de ejecutar.
 - `11-user-flow.js` — página de user flow, pendiente de ejecutar.
+- `build-svg.py` — genera los dos entregables pendientes como SVG importables.
 
 Para ejecutarlos: concatenar `00-helpers.js` con el script deseado y pasarlo a la
 herramienta `use_figma` del MCP de Figma con el `fileKey` del archivo.

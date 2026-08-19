@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1712" height="612" viewBox="0 0 1712 612">
+<rect x="0.0" y="0.0" width="1712.0" height="612.0" fill="rgb(255,255,255)"/>
+<text x="40.0" y="46.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="34" font-weight="700" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">User Flow · SaludConecta</text>
+<text x="40.0" y="80.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="400" fill="rgb(102,102,102)" text-anchor="start" dominant-baseline="middle">Paso 1 de la guía: trazar el camino antes de dibujar. Dos roles, dos recorridos.</text>
+<rect x="40.0" y="110.0" width="1632.0" height="206.0" rx="16" fill="rgb(247,247,247)" stroke="rgb(217,217,217)" stroke-width="1"/>
+<text x="64.0" y="146.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="700" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Flujo Paciente</text>
+<text x="64.0" y="170.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Camino principal: sacar una cita en 5 toques desde el Home.</text>
+<rect x="64.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="78.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="91.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">01</text>
+<text x="78.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Login</text>
+<text x="78.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Elige rol: Paciente</text>
+<text x="271.0" y="247.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="298.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="312.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="325.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">02</text>
+<text x="312.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Home</text>
+<text x="312.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Buscador + especialidades</text>
+<text x="505.0" y="247.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="532.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="546.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="559.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">03</text>
+<text x="546.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Resultados</text>
+<text x="546.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Filtra por cercanía</text>
+<text x="739.0" y="247.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="766.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="780.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="793.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">04</text>
+<text x="780.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Detalle Médico</text>
+<text x="780.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Currículum y precio</text>
+<text x="973.0" y="247.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="1000.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="1014.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="1027.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">05</text>
+<text x="1014.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Agenda</text>
+<text x="1014.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Fecha, hora y modalidad</text>
+<text x="1207.0" y="247.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="1234.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(51,51,51)" stroke="rgb(51,51,51)" stroke-width="1.5"/>
+<rect x="1248.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(89,89,89)"/>
+<text x="1261.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(255,255,255)" text-anchor="middle" dominant-baseline="middle">06</text>
+<text x="1248.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(255,255,255)" text-anchor="start" dominant-baseline="middle">Confirmación</text>
+<text x="1248.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(204,204,204)" text-anchor="start" dominant-baseline="middle">Cita agendada</text>
+<text x="1441.0" y="247.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="1468.0" y="202.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="1482.0" y="214.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="1495.0" y="223.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">07</text>
+<text x="1482.0" y="248.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Mis Citas</text>
+<text x="1482.0" y="270.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Historial y recordatorios</text>
+<rect x="40.0" y="348.0" width="1398.0" height="206.0" rx="16" fill="rgb(247,247,247)" stroke="rgb(217,217,217)" stroke-width="1"/>
+<text x="64.0" y="384.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="700" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Flujo Médico Especialista</text>
+<text x="64.0" y="408.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Camino principal: revisar la agenda del día y gestionar disponibilidad.</text>
+<rect x="64.0" y="440.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="78.0" y="452.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="91.0" y="461.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">01</text>
+<text x="78.0" y="486.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Login</text>
+<text x="78.0" y="508.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Elige rol: Médico</text>
+<text x="271.0" y="485.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="298.0" y="440.0" width="180.0" height="90.0" rx="12" fill="rgb(51,51,51)" stroke="rgb(51,51,51)" stroke-width="1.5"/>
+<rect x="312.0" y="452.0" width="26.0" height="18.0" rx="9" fill="rgb(89,89,89)"/>
+<text x="325.0" y="461.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(255,255,255)" text-anchor="middle" dominant-baseline="middle">02</text>
+<text x="312.0" y="486.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(255,255,255)" text-anchor="start" dominant-baseline="middle">Dashboard</text>
+<text x="312.0" y="508.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(204,204,204)" text-anchor="start" dominant-baseline="middle">Agenda del día</text>
+<text x="505.0" y="485.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="532.0" y="440.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="546.0" y="452.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="559.0" y="461.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">03</text>
+<text x="546.0" y="486.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Panel Pacientes</text>
+<text x="546.0" y="508.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Citados hoy</text>
+<text x="739.0" y="485.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="766.0" y="440.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="780.0" y="452.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="793.0" y="461.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">04</text>
+<text x="780.0" y="486.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Hoja de Vida</text>
+<text x="780.0" y="508.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Antecedentes y alergias</text>
+<text x="973.0" y="485.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="1000.0" y="440.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="1014.0" y="452.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="1027.0" y="461.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">05</text>
+<text x="1014.0" y="486.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Nota rápida</text>
+<text x="1014.0" y="508.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Registra la consulta</text>
+<text x="1207.0" y="485.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="400" fill="rgb(115,115,115)" text-anchor="middle" dominant-baseline="middle">→</text>
+<rect x="1234.0" y="440.0" width="180.0" height="90.0" rx="12" fill="rgb(255,255,255)" stroke="rgb(153,153,153)" stroke-width="1.5"/>
+<rect x="1248.0" y="452.0" width="26.0" height="18.0" rx="9" fill="rgb(235,235,235)"/>
+<text x="1261.0" y="461.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="700" fill="rgb(76,76,76)" text-anchor="middle" dominant-baseline="middle">06</text>
+<text x="1248.0" y="486.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="rgb(33,33,33)" text-anchor="start" dominant-baseline="middle">Gestión Agenda</text>
+<text x="1248.0" y="508.0" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="400" fill="rgb(115,115,115)" text-anchor="start" dominant-baseline="middle">Bloquear horarios</text>
+</svg>
