@@ -1,0 +1,17 @@
+SIMULADOR PREDICTIVO DEL PIB · BigML Deepnet
+============================================
+
+1. Abre index.html con doble clic (Chrome, Edge o Firefox actualizados).
+2. Pulsa "Datos de ejemplo" o introduce los 8 indicadores y "Ejecutar simulación".
+
+Configuración (dentro de index.html, bloque <script>):
+  BIGML_USERNAME = "ALEJOLEON2004"
+  BIGML_API_KEY  = tu API Key de BigML
+  MODEL_ID       = "deepnet/xxxxxxxx"  -> si lo dejas sin configurar, la app usa
+                   automáticamente la Deepnet terminada más reciente de tu cuenta.
+
+Si el navegador bloquea la petición al abrir desde file:// (CORS), sirve la carpeta:
+  python -m http.server 8000   y abre  http://localhost:8000
+
+Seguridad: la API Key queda visible en el código del navegador. Úsala solo en
+local y regenérala en BigML si compartes este archivo.

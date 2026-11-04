@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulador PIB · Analítica Predictiva</title>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <!-- Iconos Lucide -->
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <script>
+    if (window.tailwind) tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            night: { 950: '#05070d', 900: '#0a0f1c', 800: '#0f172a', 700: '#162036' },
+            neon:  { green: '#22ffa3', blue: '#2ea8ff', violet: '#8b5cf6' },
+          },
+          boxShadow: {
+            glow: '0 0 0 1px rgba(46,168,255,.25), 0 10px 40px -10px rgba(46,168,255,.35)',
+            'glow-green': '0 0 0 1px rgba(34,255,163,.30), 0 20px 60px -15px rgba(34,255,163,.45)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    html { background: #05070d; }
+    body {
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(46,168,255,.12), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(34,255,163,.08), transparent 60%),
+        radial-gradient(800px 600px at 50% 120%, rgba(139,92,246,.10), transparent 60%),
+        #05070d;
+      background-attachment: fixed;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(148,163,184,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.05) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    }
+    .glass {
+      background: linear-gradient(180deg, rgba(22,32,54,.62), rgba(10,15,28,.55));
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      border: 1px solid rgba(148,163,184,.14);
+    }
+    .field-input::-webkit-outer-spin-button,
+    .field-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .field-input { -moz-appearance: textfield; }
+
+    /* Animaciones */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .fade-up { animation: fadeUp .55s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes pulseRing { 0% { transform: scale(.8); opacity: .7; } 100% { transform: scale(1.8); opacity: 0; } }
+    .pulse-ring::before, .pulse-ring::after {
+      content: ''; position: absolute; inset: 0; border-radius: 9999px;
+      border: 2px solid rgba(46,168,255,.6); animation: pulseRing 1.8s ease-out infinite;
+    }
+    .pulse-ring::after { animation-delay: .9s; border-color: rgba(34,255,163,.6); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin-slow { animation: spin 1.4s linear infinite; }
+    .spin-rev  { animation: spin 2.2s linear infinite reverse; }
+    @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+    .shimmer {
+      background: linear-gradient(90deg, rgba(148,163,184,.08) 0%, rgba(148,163,184,.22) 50%, rgba(148,163,184,.08) 100%);
+      background-size: 800px 100%; animation: shimmer 1.6s linear infinite;
+    }
+    @keyframes neuron { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+    .neuron { animation: neuron 1.2s ease-in-out infinite; }
+    @keyframes shake { 10%,90% { transform: translateX(-1px); } 20%,80% { transform: translateX(2px); } 30%,50%,70% { transform: translateX(-4px); } 40%,60% { transform: translateX(4px); } }
+    .shake { animation: shake .5s both; }
+    .text-glow { text-shadow: 0 0 30px rgba(34,255,163,.45); }
+    ::selection { background: rgba(46,168,255,.35); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+
+<body class="min-h-full font-sans text-slate-200 antialiased">
+  <div class="grid-bg fixed inset-0 pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+
+    <!-- ============ CABECERA ============ -->
+    <header class="glass rounded-2xl px-5 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 fade-up">
+      <div class="flex items-center gap-4">
+        <div class="relative h-12 w-12 shrink-0 rounded-xl bg-gradient-to-br from-neon-blue/30 to-neon-green/20 border border-neon-blue/40 grid place-items-center shadow-glow">
+          <i data-lucide="brain-circuit" class="h-6 w-6 text-neon-blue"></i>
+        </div>
+        <div>
+          <p class="text-[11px] uppercase tracking-[.25em] text-neon-blue/80 font-semibold">Analítica Predictiva Macroeconómica</p>
+          <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Simulador de Producto Interno Bruto</h1>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-night-900/60 px-3 py-1.5">
+          <i data-lucide="network" class="h-3.5 w-3.5 text-neon-violet"></i> Deepnet · BigML
+        </span>
+        <span class="inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-night-900/60 px-3 py-1.5 font-mono">
+          <i data-lucide="user" class="h-3.5 w-3.5 text-slate-400"></i><span id="userBadge"></span>
+        </span>
+        <span id="modelBadge" class="inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-night-900/60 px-3 py-1.5 font-mono max-w-[260px] truncate">
+          <span class="h-2 w-2 rounded-full bg-amber-400"></span><span id="modelBadgeText">modelo sin configurar</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- ============ CUERPO ============ -->
+    <main class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+      <!-- ---------- FORMULARIO ---------- -->
+      <form id="simForm" class="xl:col-span-7 space-y-6" novalidate autocomplete="off">
+
+        <div class="flex items-end justify-between gap-4 fade-up" style="animation-delay:.05s">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Parámetros de simulación</h2>
+            <p class="text-sm text-slate-400">Ajusta los 8 indicadores y ejecuta la red neuronal para estimar el PIB.</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button type="button" id="btnExample" class="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-night-900/70 px-3 py-2 text-xs font-medium text-slate-300 hover:border-neon-blue/60 hover:text-white transition">
+              <i data-lucide="flask-conical" class="h-4 w-4"></i><span class="hidden sm:inline">Datos de ejemplo</span>
+            </button>
+            <button type="button" id="btnReset" class="inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-night-900/70 px-3 py-2 text-xs font-medium text-slate-300 hover:border-rose-400/60 hover:text-white transition">
+              <i data-lucide="rotate-ccw" class="h-4 w-4"></i><span class="hidden sm:inline">Limpiar</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="blocks" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+
+        <!-- Barra de acción -->
+        <div class="glass rounded-2xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 fade-up" style="animation-delay:.35s">
+          <div class="flex items-center gap-3">
+            <div class="relative h-10 w-10 grid place-items-center">
+              <svg viewBox="0 0 36 36" class="h-10 w-10 -rotate-90">
+                <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(148,163,184,.15)" stroke-width="3"/>
+                <circle id="progressRing" cx="18" cy="18" r="15.5" fill="none" stroke="url(#gradRing)" stroke-width="3" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="97.4" style="transition: stroke-dashoffset .4s ease"/>
+                <defs><linearGradient id="gradRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ea8ff"/><stop offset="1" stop-color="#22ffa3"/></linearGradient></defs>
+              </svg>
+              <span id="progressText" class="absolute text-[10px] font-mono text-slate-300">0/8</span>
+            </div>
+            <div class="text-sm">
+              <p class="text-white font-medium">Completitud de indicadores</p>
+              <p class="text-slate-400 text-xs">Los campos vacíos se envían como ausentes (la Deepnet los imputa).</p>
+            </div>
+          </div>
+          <button id="btnSubmit" type="submit"
+            class="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-neon-blue to-neon-green px-6 py-3 whitespace-nowrap font-semibold text-night-950 shadow-glow transition hover:brightness-110 active:scale-[.98] disabled:opacity-60 disabled:cursor-not-allowed">
+            <span class="absolute inset-0 -translate-x-full bg-white/30 skew-x-12 transition-transform duration-700 group-hover:translate-x-full"></span>
+            <i data-lucide="play" class="h-5 w-5"></i>
+            <span id="btnSubmitText">Ejecutar simulación</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- ---------- PANEL DE RESULTADOS ---------- -->
+      <aside class="xl:col-span-5 space-y-6">
+        <section class="glass rounded-2xl p-5 sm:p-6 min-h-[420px] flex flex-col fade-up" style="animation-delay:.15s" aria-live="polite">
+          <div class="flex items-center justify-between">
+            <h2 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-[.2em] text-slate-400">
+              <i data-lucide="activity" class="h-4 w-4 text-neon-green"></i> Resultado predictivo
+            </h2>
+            <span id="statusPill" class="rounded-full border border-slate-700 px-2.5 py-1 text-[11px] font-mono text-slate-400">IDLE</span>
+          </div>
+          <div id="resultArea" class="flex-1 mt-5 flex"></div>
+        </section>
+
+        <!-- Historial -->
+        <section class="glass rounded-2xl p-5 fade-up" style="animation-delay:.25s">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="flex items-center gap-2 text-sm font-semibold text-white">
+              <i data-lucide="history" class="h-4 w-4 text-neon-blue"></i> Historial de simulaciones
+            </h3>
+            <button id="btnClearHistory" class="text-xs text-slate-500 hover:text-slate-300 transition">Borrar</button>
+          </div>
+          <div id="historyChart" class="mb-3"></div>
+          <ul id="historyList" class="space-y-2 max-h-56 overflow-y-auto pr-1"></ul>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="mt-10 text-center text-xs text-slate-500">
+      Predicciones generadas por una red neuronal profunda entrenada en BigML · Uso analítico / académico.
+    </footer>
+  </div>
+
+  <script>
+  /* =====================================================================
+     CONFIGURACIÓN DE BIGML
+     ===================================================================== */
+  const BIGML_USERNAME = "ALEJOLEON2004";
+  const BIGML_API_KEY  = "[PEGA_AQUÍ_TU_API_KEY]";
+  const MODEL_ID       = "[PEGA_AQUÍ_TU_ID_DE_DEEPNET]";   // ej: "deepnet/65f4a1b2c3d4e5f6a7b8c9d0"
+  const BIGML_BASE_URL = "https://bigml.io/andromeda";
+
+  /* =====================================================================
+     DEFINICIÓN DE INDICADORES (nombres EXACTOS del dataset en BigML)
+     ===================================================================== */
+  const BLOCKS = [
+    {
+      id: "consumo", title: "Componentes del Consumo", icon: "shopping-cart",
+      accent: "text-neon-blue", ring: "focus:border-neon-blue focus:ring-neon-blue/30",
+      fields: [
+        { name: "Consumo Total",             icon: "wallet",     hint: "Gasto de consumo agregado" },
+        { name: "Consumo de Hogares",        icon: "home",       hint: "Gasto privado de los hogares" },
+        { name: "Consumo Final del Gobierno",icon: "landmark",   hint: "Gasto público en consumo" },
+      ],
+    },
+    {
+      id: "inversion", title: "Inversión y Capital", icon: "factory",
+      accent: "text-neon-violet", ring: "focus:border-neon-violet focus:ring-neon-violet/30",
+      fields: [
+        { name: "Formación bruta de capital",      icon: "building-2",   hint: "Inversión total, incluye inventarios" },
+        { name: "Formación Bruta de Capital Fijo", icon: "hammer",       hint: "Maquinaria, equipo y construcción" },
+        { name: "Demanda Final interna",           icon: "layers",       hint: "Consumo + inversión doméstica" },
+      ],
+    },
+    {
+      id: "externo", title: "Sector Externo", icon: "globe-2", span: "md:col-span-2",
+      accent: "text-neon-green", ring: "focus:border-neon-green focus:ring-neon-green/30",
+      fields: [
+        { name: "Exportaciones Totales", icon: "ship",            hint: "Bienes y servicios vendidos al exterior" },
+        { name: "Importaciones Totales", icon: "package-open",    hint: "Bienes y servicios comprados al exterior" },
+      ],
+    },
+  ];
+  const ALL_FIELDS = BLOCKS.flatMap(b => b.fields.map(f => f.name));
+
+  // Valores de demostración (proporciones típicas de cuentas nacionales)
+  const EXAMPLE = {
+    "Consumo Total": 812450.75,
+    "Consumo de Hogares": 655300.4,
+    "Consumo Final del Gobierno": 157150.35,
+    "Formación bruta de capital": 245890.2,
+    "Formación Bruta de Capital Fijo": 231470.6,
+    "Demanda Final interna": 1058340.95,
+    "Exportaciones Totales": 172980.15,
+    "Importaciones Totales": 205610.8,
+  };
+
+  /* =====================================================================
+     UTILIDADES
+     ===================================================================== */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const fmt = (n, d = 2) => Number(n).toLocaleString("es-CO", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const fmtCompact = n => Number(n).toLocaleString("es-CO", { notation: "compact", maximumFractionDigits: 2 });
+  const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  const isPlaceholder = v => !v || v.startsWith("[");
+  const refreshIcons = () => window.lucide && lucide.createIcons();
+
+  /* =====================================================================
+     RENDER DEL FORMULARIO POR BLOQUES
+     ===================================================================== */
+  function renderBlocks() {
+    const html = BLOCKS.map((b, i) => `
+      <fieldset class="glass rounded-2xl p-5 ${b.span || ""} fade-up" style="animation-delay:${0.1 + i * 0.08}s">
+        <legend class="sr-only">${b.title}</legend>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-9 w-9 rounded-lg bg-night-900/80 border border-slate-700/70 grid place-items-center">
+            <i data-lucide="${b.icon}" class="h-4.5 w-4.5 ${b.accent}" style="width:18px;height:18px"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-white">${b.title}</h3>
+            <p class="text-[11px] text-slate-500 font-mono">${b.fields.length} indicadores</p>
+          </div>
+        </div>
+        <div class="grid gap-4 ${b.span ? "sm:grid-cols-2" : ""}">
+          ${b.fields.map(f => {
+            const id = "f-" + slug(f.name);
+            return `
+            <div>
+              <label for="${id}" class="flex items-center gap-1.5 text-xs font-medium text-slate-300 mb-1.5">
+                <i data-lucide="${f.icon}" class="text-slate-500" style="width:14px;height:14px"></i>${f.name}
+              </label>
+              <div class="relative">
+                <input id="${id}" name="${f.name}" type="number" step="any" inputmode="decimal" placeholder="0.00"
+                  class="field-input w-full rounded-xl border border-slate-700/80 bg-night-950/70 px-3.5 py-2.5 pr-10 font-mono text-sm text-white placeholder-slate-600 outline-none ring-0 transition focus:ring-4 ${b.ring}" />
+                <span class="field-check absolute right-3 top-1/2 -translate-y-1/2 opacity-0 transition">
+                  <i data-lucide="check-circle-2" class="${b.accent}" style="width:16px;height:16px"></i>
+                </span>
+              </div>
+              <p class="mt-1 text-[11px] text-slate-500">${f.hint}</p>
+            </div>`;
+          }).join("")}
+        </div>
+      </fieldset>`).join("");
+    $("#blocks").innerHTML = html;
+  }
+
+  function updateProgress() {
+    const inputs = [...document.querySelectorAll("#blocks input")];
+    let filled = 0;
+    inputs.forEach(inp => {
+      const ok = inp.value.trim() !== "" && !isNaN(parseFloat(inp.value));
+      if (ok) filled++;
+      inp.parentElement.querySelector(".field-check").style.opacity = ok ? "1" : "0";
+    });
+    $("#progressText").textContent = `${filled}/8`;
+    $("#progressRing").style.strokeDashoffset = 97.4 * (1 - filled / 8);
+  }
+
+  /* =====================================================================
+     ESTADOS DEL PANEL DE RESULTADOS
+     ===================================================================== */
+  function setStatus(label, cls) {
+    const pill = $("#statusPill");
+    pill.textContent = label;
+    pill.className = "rounded-full border px-2.5 py-1 text-[11px] font-mono " + cls;
+  }
+
+  function showIdle() {
+    setStatus("IDLE", "border-slate-700 text-slate-400");
+    $("#resultArea").innerHTML = `
+      <div class="m-auto text-center fade-up">
+        <div class="mx-auto h-20 w-20 rounded-2xl border border-dashed border-slate-600 grid place-items-center">
+          <i data-lucide="line-chart" class="h-9 w-9 text-slate-500"></i>
+        </div>
+        <p class="mt-5 text-lg font-semibold text-white">Listo para simular</p>
+        <p class="mt-1 text-sm text-slate-400 max-w-xs mx-auto">Introduce los indicadores macroeconómicos y pulsa <span class="text-neon-blue font-medium">Ejecutar simulación</span> para obtener el PIB estimado.</p>
+      </div>`;
+    refreshIcons();
+  }
+
+  function showLoading() {
+    setStatus("RUNNING", "border-neon-blue/50 text-neon-blue bg-neon-blue/10");
+    const nodes = [0,1,2,3,4].map(i => `<span class="neuron h-2 w-2 rounded-full bg-neon-blue" style="animation-delay:${i*0.15}s"></span>`).join("");
+    $("#resultArea").innerHTML = `
+      <div class="m-auto w-full text-center fade-up">
+        <div class="relative mx-auto h-24 w-24">
+          <div class="pulse-ring absolute inset-0 rounded-full"></div>
+          <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-neon-blue border-r-neon-blue/40 spin-slow"></div>
+          <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-neon-green border-l-neon-green/40 spin-rev"></div>
+          <div class="absolute inset-0 grid place-items-center"><i data-lucide="brain" class="h-8 w-8 text-white"></i></div>
+        </div>
+        <p class="mt-6 text-base font-semibold text-white">Ejecutando simulación neuronal... 🧠</p>
+        <div class="mt-3 flex justify-center gap-2">${nodes}</div>
+        <div class="mt-6 space-y-2 max-w-xs mx-auto">
+          <div class="shimmer h-3 rounded-full"></div>
+          <div class="shimmer h-3 rounded-full w-4/5 mx-auto"></div>
+          <div class="shimmer h-3 rounded-full w-3/5 mx-auto"></div>
+        </div>
+      </div>`;
+    refreshIcons();
+  }
+
+  function showSuccess(value, prev, meta) {
+    setStatus("SUCCESS", "border-neon-green/50 text-neon-green bg-neon-green/10");
+    let delta = "";
+    if (prev != null && prev !== 0) {
+      const pct = ((value - prev) / Math.abs(prev)) * 100;
+      const up = pct >= 0;
+      delta = `
+        <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-mono ${up ? "bg-neon-green/10 text-neon-green border border-neon-green/30" : "bg-rose-500/10 text-rose-300 border border-rose-500/30"}">
+          <i data-lucide="${up ? "trending-up" : "trending-down"}" style="width:14px;height:14px"></i>
+          ${up ? "+" : ""}${fmt(pct)}% vs. simulación anterior
+        </span>`;
+    }
+    const conf = meta.confidence != null ? `
+      <div class="rounded-xl border border-slate-700/70 bg-night-950/50 p-3">
+        <p class="text-[11px] uppercase tracking-wider text-slate-500">Confianza</p>
+        <p class="mt-1 font-mono text-sm text-white">${fmt(meta.confidence, 4)}</p>
+      </div>` : "";
+    $("#resultArea").innerHTML = `
+      <div class="w-full flex flex-col fade-up">
+        <div class="relative overflow-hidden rounded-2xl border border-neon-green/30 bg-gradient-to-br from-neon-green/10 via-night-900/80 to-neon-blue/10 p-6 shadow-glow-green">
+          <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-neon-green/20 blur-3xl"></div>
+          <div class="absolute -left-10 -bottom-12 h-40 w-40 rounded-full bg-neon-blue/20 blur-3xl"></div>
+          <div class="relative">
+            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[.25em] text-neon-green">
+              <i data-lucide="sparkles" style="width:14px;height:14px"></i> PIB Estimado
+            </p>
+            <p id="pibValue" class="mt-3 font-mono font-bold text-white text-glow leading-none break-all text-4xl sm:text-5xl">0</p>
+            <p class="mt-2 text-sm text-slate-400">≈ <span class="font-mono text-slate-200">${fmtCompact(value)}</span> · en las unidades del dataset</p>
+            <div class="mt-4">${delta}</div>
+          </div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-3 text-left">
+          <div class="rounded-xl border border-slate-700/70 bg-night-950/50 p-3">
+            <p class="text-[11px] uppercase tracking-wider text-slate-500">Latencia</p>
+            <p class="mt-1 font-mono text-sm text-white">${meta.ms} ms</p>
+          </div>
+          <div class="rounded-xl border border-slate-700/70 bg-night-950/50 p-3">
+            <p class="text-[11px] uppercase tracking-wider text-slate-500">Indicadores usados</p>
+            <p class="mt-1 font-mono text-sm text-white">${meta.used}/8</p>
+          </div>
+          ${conf}
+          <div class="rounded-xl border border-slate-700/70 bg-night-950/50 p-3 ${conf ? "" : "col-span-2"}">
+            <p class="text-[11px] uppercase tracking-wider text-slate-500">Recurso</p>
+            <p class="mt-1 font-mono text-xs text-slate-300 truncate" title="${escapeHtml(meta.resource || "")}">${escapeHtml(meta.resource || "—")}</p>
+          </div>
+        </div>
+      </div>`;
+    refreshIcons();
+    animateNumber($("#pibValue"), value);
+  }
+
+  function showError(title, message, tips = []) {
+    setStatus("ERROR", "border-rose-500/50 text-rose-300 bg-rose-500/10");
+    $("#resultArea").innerHTML = `
+      <div class="m-auto w-full shake">
+        <div class="rounded-2xl border border-rose-500/30 bg-gradient-to-br from-rose-500/10 to-night-900/60 p-5">
+          <div class="flex items-start gap-3">
+            <div class="h-10 w-10 shrink-0 rounded-xl bg-rose-500/15 border border-rose-500/30 grid place-items-center">
+              <i data-lucide="alert-triangle" class="h-5 w-5 text-rose-300"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="font-semibold text-white">${escapeHtml(title)}</p>
+              <p class="mt-1 text-sm text-slate-300 break-words">${escapeHtml(message)}</p>
+            </div>
+          </div>
+          ${tips.length ? `
+          <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+            ${tips.map(t => `<li class="flex gap-2"><i data-lucide="chevron-right" class="text-rose-300 shrink-0" style="width:14px;height:14px"></i><span>${escapeHtml(t)}</span></li>`).join("")}
+          </ul>` : ""}
+          <button type="button" id="btnRetry" class="mt-5 inline-flex items-center gap-2 rounded-lg border border-rose-400/40 px-3 py-2 text-xs font-medium text-rose-200 hover:bg-rose-500/10 transition">
+            <i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Reintentar
+          </button>
+        </div>
+      </div>`;
+    refreshIcons();
+    $("#btnRetry").addEventListener("click", () => $("#simForm").requestSubmit());
+  }
+
+  function animateNumber(el, target, duration = 1400) {
+    const start = performance.now();
+    const ease = t => 1 - Math.pow(1 - t, 4);
+    const step = now => {
+      const p = Math.min(1, (now - start) / duration);
+      el.textContent = fmt(target * ease(p));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = fmt(target);
+    };
+    requestAnimationFrame(step);
+  }
+
+  /* =====================================================================
+     HISTORIAL
+     ===================================================================== */
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem("pib-history") || "[]"); } catch (_) { history = []; }
+  const saveHistory = () => { try { localStorage.setItem("pib-history", JSON.stringify(history.slice(0, 20))); } catch (_) {} };
+
+  function renderHistory() {
+    const list = $("#historyList");
+    if (!history.length) {
+      list.innerHTML = `<li class="text-xs text-slate-500 text-center py-4">Aún no hay simulaciones.</li>`;
+      $("#historyChart").innerHTML = "";
+      return;
+    }
+    list.innerHTML = history.map((h, i) => `
+      <li class="flex items-center justify-between rounded-lg border border-slate-800 bg-night-950/40 px-3 py-2 text-xs ${i === 0 ? "border-neon-green/30" : ""}">
+        <span class="text-slate-500 font-mono">${new Date(h.t).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span>
+        <span class="font-mono ${i === 0 ? "text-neon-green" : "text-slate-200"}">${fmt(h.v)}</span>
+      </li>`).join("");
+
+    // Sparkline SVG
+    const pts = history.slice(0, 12).reverse().map(h => h.v);
+    if (pts.length < 2) { $("#historyChart").innerHTML = ""; return; }
+    const W = 300, H = 56, min = Math.min(...pts), max = Math.max(...pts), r = (max - min) || 1;
+    const xy = pts.map((v, i) => [ (i / (pts.length - 1)) * W, H - 6 - ((v - min) / r) * (H - 12) ]);
+    const line = xy.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    const last = xy[xy.length - 1];
+    $("#historyChart").innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}" class="w-full h-14" preserveAspectRatio="none">
+        <defs><linearGradient id="spark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22ffa3" stop-opacity=".35"/><stop offset="1" stop-color="#22ffa3" stop-opacity="0"/></linearGradient></defs>
+        <path d="${line} L ${W} ${H} L 0 ${H} Z" fill="url(#spark)"/>
+        <path d="${line}" fill="none" stroke="#22ffa3" stroke-width="2" vector-effect="non-scaling-stroke"/>
+        <circle cx="${last[0]}" cy="${last[1]}" r="3.5" fill="#22ffa3"/>
+      </svg>`;
+  }
+
+  /* =====================================================================
+     LLAMADA A BIGML
+     ===================================================================== */
+  function authQuery() {
+    return `username=${encodeURIComponent(BIGML_USERNAME)}&api_key=${encodeURIComponent(BIGML_API_KEY)}`;
+  }
+
+  // Si MODEL_ID no está configurado, se usa la Deepnet más reciente de la cuenta.
+  let resolvedModelId = isPlaceholder(MODEL_ID) ? null : MODEL_ID.trim();
+  async function resolveModelId() {
+    if (resolvedModelId) return resolvedModelId;
+    const res = await fetch(`${BIGML_BASE_URL}/deepnet?${authQuery()}&limit=1&order_by=-created&status.code=5`);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw Object.assign(new Error(data?.status?.message || `HTTP ${res.status}`), { status: res.status, body: data });
+    const obj = data?.objects?.[0];
+    if (!obj) throw Object.assign(new Error("No se encontró ninguna Deepnet terminada en tu cuenta de BigML."), { status: 404 });
+    resolvedModelId = obj.resource;
+    setModelBadge(resolvedModelId + " (auto)", true);
+    return resolvedModelId;
+  }
+
+  function setModelBadge(text, ok) {
+    $("#modelBadgeText").textContent = text;
+    $("#modelBadge").querySelector("span").className = "h-2 w-2 rounded-full " + (ok ? "bg-neon-green" : "bg-amber-400");
+    $("#modelBadge").title = text;
+  }
+
+  function extractPrediction(datos) {
+    // Valor solicitado: datos.prediction.output — con respaldos según la forma de la respuesta de BigML
+    const p = datos?.prediction;
+    if (p && typeof p === "object" && p.output != null) return Number(p.output);
+    if (datos?.output != null) return Number(datos.output);
+    if (p && typeof p === "object") {
+      const first = Object.values(p).find(v => typeof v === "number");
+      if (first != null) return first;
+    }
+    if (typeof p === "number") return p;
+    return NaN;
+  }
+
+  async function runSimulation(ev) {
+    ev.preventDefault();
+
+    // Construir input_data con los nombres EXACTOS
+    const inputData = {};
+    ALL_FIELDS.forEach(name => {
+      const el = document.getElementById("f-" + slug(name));
+      const raw = el.value.trim().replace(",", ".");
+      if (raw !== "" && !isNaN(parseFloat(raw))) inputData[name] = parseFloat(raw);
+    });
+    const used = Object.keys(inputData).length;
+
+    if (used === 0) {
+      showError("Sin datos para simular", "Introduce al menos un indicador macroeconómico antes de ejecutar la red neuronal.");
+      return;
+    }
+    if (isPlaceholder(BIGML_API_KEY)) {
+      showError("Credenciales no configuradas", "Edita la constante BIGML_API_KEY en el código JavaScript de este archivo.");
+      return;
+    }
+
+    const btn = $("#btnSubmit");
+    btn.disabled = true;
+    $("#btnSubmitText").textContent = "Procesando...";
+    showLoading();
+    const t0 = performance.now();
+
+    try {
+      const deepnetId = await resolveModelId();
+      const response = await fetch(`${BIGML_BASE_URL}/prediction?${authQuery()}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "deepnet": deepnetId, "input_data": inputData }),
+      });
+      const datos = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw Object.assign(new Error(datos?.status?.message || `La API respondió con HTTP ${response.status}`), { status: response.status, body: datos });
+      }
+
+      const value = extractPrediction(datos);
+      if (!isFinite(value)) throw new Error("La respuesta de BigML no contiene un valor numérico en prediction.output.");
+
+      const ms = Math.round(performance.now() - t0);
+      const prev = history[0]?.v ?? null;
+      history.unshift({ t: Date.now(), v: value, input: inputData });
+      saveHistory();
+      renderHistory();
+      showSuccess(value, prev, { ms, used, confidence: datos?.confidence ?? null, resource: datos?.resource });
+    } catch (err) {
+      handleError(err);
+    } finally {
+      btn.disabled = false;
+      $("#btnSubmitText").textContent = "Ejecutar simulación";
+    }
+  }
+
+  function handleError(err) {
+    console.error("[BigML]", err);
+    const s = err.status;
+    if (err instanceof TypeError || (!s && /fetch|network|cors/i.test(err.message))) {
+      showError("No se pudo conectar con BigML",
+        "La petición fue bloqueada antes de llegar al servidor (red caída o política CORS del navegador).",
+        ["Verifica tu conexión a Internet.",
+         "Prueba en Chrome/Edge actualizado; algunos navegadores restringen peticiones desde archivos locales (file://).",
+         "Si persiste, sirve la carpeta con un servidor local: python -m http.server 8000 y abre http://localhost:8000"]);
+    } else if (s === 401 || s === 403) {
+      showError("Credenciales rechazadas", err.message, ["Revisa BIGML_USERNAME y BIGML_API_KEY en el código.", "Comprueba que la API Key no haya sido regenerada en BigML."]);
+    } else if (s === 404) {
+      showError("Modelo no encontrado", err.message, ["Revisa que MODEL_ID tenga el formato deepnet/xxxxxxxx.", "Confirma que la Deepnet pertenezca a la cuenta configurada."]);
+    } else if (s === 400) {
+      showError("Datos de entrada inválidos", err.message, ["Confirma que los nombres de los campos coincidan exactamente con el dataset (mayúsculas y tildes)."]);
+    } else {
+      showError("Error en la simulación", err.message || "Ocurrió un error inesperado.");
+    }
+  }
+
+  /* =====================================================================
+     INICIALIZACIÓN
+     ===================================================================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    renderBlocks();
+    showIdle();
+    renderHistory();
+    refreshIcons();
+
+    $("#userBadge").textContent = BIGML_USERNAME;
+    if (resolvedModelId) setModelBadge(resolvedModelId, true);
+    else setModelBadge("Deepnet: auto (más reciente)", false);
+
+    $("#blocks").addEventListener("input", updateProgress);
+    $("#simForm").addEventListener("submit", runSimulation);
+    $("#btnExample").addEventListener("click", () => {
+      ALL_FIELDS.forEach(n => { document.getElementById("f-" + slug(n)).value = EXAMPLE[n]; });
+      updateProgress();
+    });
+    $("#btnReset").addEventListener("click", () => {
+      $("#simForm").reset(); updateProgress(); showIdle();
+    });
+    $("#btnClearHistory").addEventListener("click", () => { history = []; saveHistory(); renderHistory(); });
+  });
+  </script>
+</body>
+</html>
