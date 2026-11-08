@@ -127,6 +127,27 @@ class ReporteControllerTest {
     }
 
     @Test
+    fun `el historial se entrega por paginas`() {
+        val pagina = ReporteController.TAMANO_PAGINA
+        val semilla = List(pagina * 2 + 20) { i ->
+            SolicitudAyuda("s$i", TipoApoyo.ORIENTACION_LEGAL, TipoViolencia.FISICA,
+                descripcionValida, "", marcaTiempo = i.toLong())
+        }
+        val c = ReporteController(view, MockReporteRepository(semilla), { ahora }, { "x" })
+
+        c.iniciar()
+        assertEquals(pagina, view.historial.size)
+        assertEquals("s${semilla.size - 1}", view.historial.first().id)
+
+        c.cargarMasHistorial()
+        assertEquals(pagina * 2, view.historial.size)
+        c.cargarMasHistorial()
+        assertEquals(semilla.size, view.historial.size)
+        c.cargarMasHistorial() // ya no hay más: no cambia
+        assertEquals(semilla.size, view.historial.size)
+    }
+
+    @Test
     fun `avanzarEstado recorre el ciclo y se detiene en ATENDIDO`() {
         controller.enviarAlerta(posLegal, posFisica, descripcionValida, "")
 

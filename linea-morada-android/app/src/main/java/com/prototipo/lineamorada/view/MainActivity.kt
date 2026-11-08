@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.prototipo.lineamorada.R
 import com.prototipo.lineamorada.controller.ReporteController
@@ -48,8 +49,18 @@ class MainActivity : AppCompatActivity(), ReporteView {
         setContentView(binding.root)
         aplicarInsets()
 
-        binding.rvHistorial.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvHistorial.layoutManager = layoutManager
         binding.rvHistorial.adapter = historialAdapter
+        // Paginación: al acercarse al final, se pide la página siguiente al Controlador.
+        binding.rvHistorial.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val ultimaVisible = layoutManager.findLastVisibleItemPosition()
+                if (dy > 0 && ultimaVisible >= historialAdapter.itemCount - FILAS_ANTES_DEL_FINAL) {
+                    controller.cargarMasHistorial()
+                }
+            }
+        })
 
         // El Controlador recibe la Vista (this) y el Repositorio como dependencias.
         controller = ReporteController(this, ServiceLocator.reporteRepository)
@@ -164,5 +175,10 @@ class MainActivity : AppCompatActivity(), ReporteView {
             v.setPadding(barras.left, barras.top, barras.right, barras.bottom)
             insets
         }
+    }
+
+    private companion object {
+        /** Cuántas filas antes del final se pide la página siguiente. */
+        const val FILAS_ANTES_DEL_FINAL = 10
     }
 }

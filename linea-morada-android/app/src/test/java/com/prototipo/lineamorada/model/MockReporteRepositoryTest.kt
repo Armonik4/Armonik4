@@ -74,6 +74,31 @@ class MockReporteRepositoryTest {
     }
 
     @Test
+    fun `listarRecientes pagina del mas reciente al mas antiguo`() {
+        // Se insertan desordenados a propósito: el índice debe ordenarlos por fecha.
+        listOf(3L, 1L, 5L, 2L, 4L).forEach { repo.guardar(reporte("r$it", t = it)) }
+
+        assertEquals(listOf("r5", "r4"), repo.listarRecientes(0, 2).map { it.id })
+        assertEquals(listOf("r3", "r2"), repo.listarRecientes(2, 2).map { it.id })
+        assertEquals(listOf("r1"), repo.listarRecientes(4, 2).map { it.id })
+        assertTrue(repo.listarRecientes(5, 2).isEmpty())
+        assertTrue(repo.listarRecientes(-1, 2).isEmpty())
+        assertEquals(5, repo.contar())
+    }
+
+    @Test
+    fun `actualizarEstado se refleja en la pagina sin duplicar filas`() {
+        repo.guardar(reporte("a", t = 1))
+        repo.guardar(reporte("b", t = 2))
+
+        repo.actualizarEstado("a", EstadoReporte.ATENDIDO)
+
+        val pagina = repo.listarRecientes(0, 10)
+        assertEquals(listOf("b", "a"), pagina.map { it.id })
+        assertEquals(EstadoReporte.ATENDIDO, pagina.last().estado)
+    }
+
+    @Test
     fun `transiciones de estado`() {
         assertEquals(EstadoReporte.EN_ATENCION, EstadoReporte.PENDIENTE.siguiente())
         assertEquals(EstadoReporte.ATENDIDO, EstadoReporte.EN_ATENCION.siguiente())

@@ -18,6 +18,15 @@ interface ReporteRepository {
     /** Devuelve todos los reportes, en orden de inserción. */
     fun listar(): List<SolicitudAyuda>
 
+    /**
+     * Devuelve una página del historial, del más reciente al más antiguo.
+     * Pensado para la paginación: no copia ni ordena toda la colección.
+     */
+    fun listarRecientes(desde: Int, cantidad: Int): List<SolicitudAyuda>
+
+    /** Cantidad total de reportes guardados. */
+    fun contar(): Int
+
     /** Busca un reporte por id; `null` si no existe. */
     fun buscarPorId(id: String): SolicitudAyuda?
 

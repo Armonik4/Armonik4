@@ -31,6 +31,9 @@ class ReporteController(
     private val tiposApoyo: List<TipoApoyo> = TipoApoyo.entries
     private val tiposViolencia: List<TipoViolencia> = TipoViolencia.entries
 
+    // Cuántas filas del historial se muestran; crece de a una página al desplazarse.
+    private var filasVisibles = TAMANO_PAGINA
+
     /** Se llama una vez desde onCreate: carga los Spinners y el historial. */
     fun iniciar() {
         view?.mostrarTiposDeApoyo(tiposApoyo.map { it.etiqueta })
@@ -112,10 +115,19 @@ class ReporteController(
         view?.abrirMarcador(NUMERO_EMERGENCIAS)
     }
 
-    /** Envía a la Vista el historial ordenado (el más reciente primero). */
+    /**
+     * Envía a la Vista el historial (el más reciente primero), solo hasta las
+     * filas visibles. Antes se copiaba y ordenaba toda la lista en cada envío.
+     */
     fun actualizarVista() {
-        val historial = repository.listar().sortedByDescending { it.marcaTiempo }
-        view?.mostrarHistorial(historial)
+        view?.mostrarHistorial(repository.listarRecientes(0, filasVisibles))
+    }
+
+    /** Evento de la Vista al acercarse al final de la lista: muestra la página siguiente. */
+    fun cargarMasHistorial() {
+        if (filasVisibles >= repository.contar()) return // ya se ve todo
+        filasVisibles += TAMANO_PAGINA
+        actualizarVista()
     }
 
     /** Se llama desde onDestroy para soltar la referencia a la Activity. */
@@ -146,6 +158,9 @@ class ReporteController(
         const val MIN_DESCRIPCION = 10
         const val MAX_DESCRIPCION = 500
         const val MAX_UBICACION = 100
+
+        /** Filas del historial por página. */
+        const val TAMANO_PAGINA = 50
 
         /** Línea nacional de emergencias en Colombia. */
         const val NUMERO_EMERGENCIAS = "123"
