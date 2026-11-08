@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.LineaMorada" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/morado</item>
+        <item name="colorPrimaryDark">@color/morado_oscuro</item>
+        <item name="colorOnPrimary">@color/blanco</item>
+        <item name="colorSecondary">@color/morado_oscuro</item>
+        <item name="colorError">@color/rojo_emergencia</item>
+    </style>
+</resources>
