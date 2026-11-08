@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Línea Morada</string>
+
+    <!-- Encabezado y emergencia -->
+    <string name="titulo">Línea Morada</string>
+    <string name="subtitulo">Orientación legal y psicológica, y reportes de violencia de género.</string>
+    <string name="banner_emergencia">¿Estás en peligro inmediato?</string>
+    <string name="btn_llamar_emergencia">Llamar al 123</string>
+
+    <!-- Formulario -->
+    <string name="hint_tipo_apoyo">Selecciona el tipo de apoyo…</string>
+    <string name="hint_tipo_violencia">Selecciona el tipo de violencia…</string>
+    <string name="label_tipo_apoyo">Tipo de apoyo</string>
+    <string name="label_tipo_violencia">Tipo de violencia</string>
+    <string name="hint_descripcion">Cuéntanos brevemente qué está pasando</string>
+    <string name="hint_ubicacion">Ubicación aproximada (opcional): municipio o barrio</string>
+    <string name="btn_enviar_alerta">Enviar alerta</string>
+
+    <!-- Historial -->
+    <string name="titulo_historial">Historial de reportes</string>
+    <string name="historial_vacio">Aún no hay reportes.</string>
+    <string name="item_tipo">%1$s · %2$s</string>
+    <string name="item_meta">%1$s · %2$s</string>
+    <string name="sin_ubicacion">Sin ubicación</string>
+
+    <!-- Errores de validación -->
+    <string name="error_tipo_apoyo">Selecciona un tipo de apoyo.</string>
+    <string name="error_tipo_violencia">Selecciona un tipo de violencia.</string>
+    <string name="error_descripcion_corta">Escribe al menos %1$d caracteres.</string>
+    <string name="error_descripcion_larga">Máximo %1$d caracteres.</string>
+    <string name="error_ubicacion_larga">Máximo %1$d caracteres.</string>
+    <string name="error_guardado">No se pudo guardar el reporte. Intenta de nuevo.</string>
+
+    <!-- Confirmación y diálogo de emergencia -->
+    <string name="confirmacion_enviada">Reporte enviado. Una profesional te contactará.</string>
+    <string name="emergencia_titulo">Solicitud de emergencia</string>
+    <string name="emergencia_mensaje">Registramos tu solicitud. Si estás en peligro ahora mismo, llama a la línea de emergencias 123.</string>
+    <string name="emergencia_llamar">Llamar al 123</string>
+    <string name="cerrar">Cerrar</string>
+</resources>

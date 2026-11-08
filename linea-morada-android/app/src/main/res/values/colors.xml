@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="morado">#6A1B9A</color>
+    <color name="morado_oscuro">#4A148C</color>
+    <color name="morado_claro">#F3E5F5</color>
+    <color name="rojo_emergencia">#B71C1C</color>
+    <color name="blanco">#FFFFFF</color>
+</resources>
